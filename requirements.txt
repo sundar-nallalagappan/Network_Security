@@ -1,0 +1,11 @@
+pymongo
+pandas
+numpy
+matplotlib
+python-dotenv
+certifi
+pymongo[srv]
+pyyaml
+dill
+scikit-learn
+-e .

@@ -24,11 +24,11 @@ SCHEMA_DROP_COLS = "drop_columns"
 '''
 Data Ingestion related constants starts with DATA_INGESTION VAR NAME
 '''
-DATA_INGESTION_COLLECTIONNAME:str          = "MLOPS"
-DATA_INGESTION_DATABASE_NAME:str           = "NetworkData"
+DATA_INGESTION_COLLECTION_NAME:str         = "NetworkData"
+DATA_INGESTION_DATABASE_NAME:str           = "MLOPS"
 DATA_INGESTION_DIR_NAME:str                = "data_ingestion"
 DATA_INGESTION_FEATURE_STORE_DIR:str       = "feature_store"
-DATA_INGESTION_INGESTIED_DIR:str           = "ingested"
+DATA_INGESTION_INGESTED_DIR:str            = "ingested"
 DATA_INGESTION_TRAIN_TEST_SPLIT_RATION:str = 0.2
 
 
