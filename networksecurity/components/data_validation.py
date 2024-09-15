@@ -105,20 +105,32 @@ class DataValidation:
             train_dataframe = DataValidation.read_data(train_file_path)
             test_dataframe  = DataValidation.read_data(test_file_path)
             
-            status = self.validate_number_of_column(dataframe=train_dataframe)
-            if not status:
+            status_train = self.validate_number_of_column(dataframe=train_dataframe)
+            if not status_train:
                 error_message=f"{error_message} Train dataframe does not contain all columns \n"
-            status = self.validate_number_of_column(dataframe=test_dataframe)
-            if not status:
+            status_test = self.validate_number_of_column(dataframe=test_dataframe)
+            if not status_test:
                 error_message=f"{error_message} Test dataframe does not contain all columns \n"                
                 
-            status = self.detect_dataset_drift(base_df=train_dataframe,
+            status_drift = self.detect_dataset_drift(base_df=train_dataframe,
                                                current_df=test_dataframe)
             
+            os.makedirs(os.path.dirname(self.data_validation_config.valid_train_file_path), exist_ok=True)
+            os.makedirs(os.path.dirname(self.data_validation_config.invalid_train_file_path), exist_ok=True)
+            if status_train and status_drift:
+                train_dataframe.to_csv(self.data_validation_config.valid_train_file_path, index=False, header=True)
+            else:
+                train_dataframe.to_csv(self.data_validation_config.invalid_train_file_path, index=False, header=True)
+                
+            if status_test and status_drift:                
+                test_dataframe.to_csv(self.data_validation_config.valid_test_file_path, index=False, header=True)
+            else:
+                test_dataframe.to_csv(self.data_validation_config.invalid_test_file_path, index=False, header=True)
+            
             data_validation_artifact = DataValidationArtifact(
-                    validation_status       = status,
-                    valid_train_file_path   = self.data_ingestion_artifact.trained_file_path,
-                    valid_test_file_path    = self.data_ingestion_artifact.test_file_path,
+                    validation_status       = status_drift,
+                    valid_train_file_path   = self.data_validation_config.valid_train_file_path,
+                    valid_test_file_path    = self.data_validation_config.valid_test_file_path,
                     invalid_train_file_path = None,
                     invalid_test_file_path  = None,
                     drift_report_file_path  = self.data_validation_config.drift_report_file_path

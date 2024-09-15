@@ -22,6 +22,9 @@ class ModelTrainer:
         except Exception as e:
             raise NetworkSecurityException(e, sys)
     
+    def perform_hyper_parameter_tuning(self):
+        pass
+    
     def train_model(self, x, y):
         try:
             xgb_clf = XGBClassifier()
@@ -52,7 +55,7 @@ class ModelTrainer:
             classification_train_metric = get_classification_score(y_train, y_train_pred)
             
             if classification_train_metric.f1_score <= self.model_trainer_config.expected_accuracy:
-                raise Exception ("Trained modelis not good to provide expected accuracy")
+                raise Exception ("Trained model is not good to provide expected accuracy")
             
             y_test_pred = model.predict(x_test)
             classification_test_metric = get_classification_score(y_test, y_test_pred)
@@ -75,6 +78,7 @@ class ModelTrainer:
                 test_metric_artifact    = classification_train_metric
             )
             logging.info("model trainer exited")
+            return model_trainer_artifact
         except Exception as e:
             raise NetworkSecurityException(e, sys)
         

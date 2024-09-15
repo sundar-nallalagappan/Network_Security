@@ -78,22 +78,28 @@ class TrainingPipeline:
             raise NetworkSecurityException(e, sys)
         
     def start_model_evaluation(self, 
-                               model_evaluation_artifact:ModelTrainerArtifact, 
-                               data_validation_artifact:DataValidationArtifact):
+                               model_trainer_artifact:ModelTrainerArtifact,
+                               data_validation_artifact:DataValidationArtifact
+                               ):
         try:
             model_evaluation_config:ModelEvaluationConfig = ModelEvaluationConfig(training_pipeline_config=self.training_pipeline_config)
             model_eval = ModelEvaluation(model_evaluation_config,
-                                         model_evaluation_artifact,
-                                         data_validation_artifact)
-            model_eval_artifact=model_eval.iniitial_model_evaluation()
+                                         data_validation_artifact,
+                                         model_trainer_artifact,
+                                         )
+            model_eval_artifact=model_eval.initiate_model_evaluation()
             return model_eval_artifact
         except Exception as e:
             raise NetworkSecurityException(e, sys)
         
     def start_model_pusher(self,
-                           data_transformation_artifact: DataTransformationArtifact):
+                           model_evaluation_artifact: ModelEvaluationArtifact):
         try:
-            pass
+            model_pusher_config = ModelPusherConfig(training_pipeline_config=self.training_pipeline_config)
+            model_pusher = ModelPusher(model_pusher_config,
+                                       model_evaluation_artifact)
+            model_pusher_artifact = model_pusher.initiate_model_pusher()
+            return model_pusher_artifact
         except Exception as e:
             raise NetworkSecurityException(e, sys)
         
@@ -109,6 +115,17 @@ class TrainingPipeline:
             print('data_transformation_artifact:', data_transformation_artifact)
             
             model_trainer_artifact=self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)
+            print('model_trainer_artifact:', model_trainer_artifact)
+            
+            model_evaluation_artifact = self.start_model_evaluation(model_trainer_artifact=model_trainer_artifact,
+                                                                    data_validation_artifact=data_validation_artifact)
+            print('model_evaluation_artifact:', model_evaluation_artifact)
+            
+            if not model_evaluation_artifact.is_model_accepted:
+                raise Exception("Trained model is not better than bst model")
+            
+            model_pusher_artifact = self.start_model_pusher(model_evaluation_artifact=model_evaluation_artifact)
+            print('model_pusher_artifact', model_pusher_artifact)
             
         except Exception as e:
             raise NetworkSecurityException(e, sys)
