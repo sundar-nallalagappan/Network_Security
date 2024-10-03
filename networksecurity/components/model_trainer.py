@@ -69,7 +69,7 @@ class ModelTrainer:
             model_dir_path = os.path.dirname(self.model_trainer_config.trained_model_file_path)
             os.makedirs(model_dir_path, exist_ok=True)
             Network_Model = NetworkModel(preprocessor=preprocessor, 
-                                         model=model_dir_path)
+                                         model=model)
             save_object(self.model_trainer_config.trained_model_file_path, obj=Network_Model)
             
             model_trainer_artifact = ModelTrainerArtifact(

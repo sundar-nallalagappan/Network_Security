@@ -15,6 +15,7 @@ class NetworkModel:
     def predict(self, x):
         try:
             x_transform = self.preprocessor.transform(x)
+            print('self.model:', self.model )
             y_hat = self.model.predict(x_transform)
             return y_hat
         except Exception as e:
@@ -32,6 +33,7 @@ class ModelResolver:
             timestamps = list(map(int, os.listdir(self.model_dir)))
             latest_timestamp = max(timestamps)
             latest_model_path = os.path.join(self.model_dir, f"{latest_timestamp}", MODEL_FILE_NAME)
+            print('get_best_model_path:', latest_model_path)
             return latest_model_path
             
         except Exception as e:

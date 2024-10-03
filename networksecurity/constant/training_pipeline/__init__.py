@@ -68,7 +68,7 @@ MODEL_TRAINER_OVER_FITTING_UNDER_FITTING_THRESHOLD: float = 0.05
 Model Evaluation related constants starts with DATA_TRAINER VAR NAME
 '''
 MODEL_EVALUATION_DIR_NAME: str                  = "model_evaluation"
-MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE: float = "0.02"
+MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE: float =  0.02
 MODEL_EVALUATION_REPORT_NAME: str               = "report.yaml"
 
 '''
@@ -76,6 +76,9 @@ Model pusher related constants starts with DATA_TRAINER VAR NAME
 '''
 MODEL_PUSHER_DIR_NAME:str         = "model_pusher"
 MODEL_PUSHER_SAVED_MODEL_DIR: str = SAVED_MODEL_DIR
+
+TRAINING_BUCKET_NAME:str    = "ml-ops-networksecurity"
+PREDICTION_BUCKET_NAME: str = "Network-dataSource"
 
 
 
