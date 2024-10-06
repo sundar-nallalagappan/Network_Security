@@ -14,4 +14,4 @@ RUN airflow users create -e nsundar.1990@gmail.com -f sundar -l n -p admin -r Ad
 RUN chmod 777 start.sh
 RUN apt update -y
 ENTRYPOINT ["/bin/sh/"]
-CMD ["start.sh"]
+CMD ["start.sh"] 
