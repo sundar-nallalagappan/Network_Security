@@ -37,21 +37,21 @@ from fastapi.templating import Jinja2Templates
 templates = Jinja2Templates(directory="./templates")
 
 client = pymongo.MongoClient(mongo_db_url, tlsCAFile=ca)
-database   = client[DATA_INGESTION_DATABASE_NAME]
+database = client[DATA_INGESTION_DATABASE_NAME]
 collection = database[DATA_INGESTION_COLLECTION_NAME]
 
 def set_env_variable(env_file_path):
     pass
 
-app     = FastAPI()
+app = FastAPI()
 origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = origins,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
 
 @app.get("/", tags=["authentication"])
@@ -63,11 +63,11 @@ async def train_route():
     try:
         train_pipeline = TrainingPipeline()
         if train_pipeline.is_pipeline_running:
-            return Response("Training pipeline is already running")
+            return Response("Training pipeline is already running.")
         train_pipeline.run_pipeline()
-        return Response("Training is successful!!")
+        return Response("Training successful !!")
     except Exception as e:
-        raise NetworkSecurityException(e, sys)
+            raise NetworkSecurityException(e,sys)
    
 '''
 @app.get("/predict")
