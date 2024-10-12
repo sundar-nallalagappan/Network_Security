@@ -4,7 +4,7 @@ from textwrap import dedent
 import pendulum
 import os
 from airflow import DAG
-from airflow.operators.python import PythonOpertor
+from airflow.operators.python import PythonOperator
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -28,7 +28,7 @@ with DAG(
         os.system(f"aws s3 sync /app/Artifacts s3://{bucket_name}/artifact")
         os.system(f"aws s3 sync /app/saved_models s3://{bucket_name}/saved_models")
         
-    training_pipeline = PythnOperator(
+    training_pipeline = PythonOperator(
         task_id = "train_pipeline",
         python_callable=training
     )
